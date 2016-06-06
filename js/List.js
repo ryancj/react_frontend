@@ -9,6 +9,8 @@ var List = React.createClass({
    this.setState({searchString:e.target.value});
   },
   componentDidMount: function(){
+    //Making a call for each repo because parent forks are not shown on https://api.github.com/users/aipub/repos
+
     var api1 = fetch("https://api.github.com/repos/aipub/fullcalendar").then(r => r.json()).then(data =>
       this.setState({repos: [data]}));
     var api2 = fetch("https://api.github.com/repos/aipub/tweepy").then(r => r.json()).then(data =>
@@ -39,20 +41,21 @@ var List = React.createClass({
       this.setState({repos: this.state.repos.concat([data])}));
     var api16 = fetch("https://api.github.com/repos/aipub/booleano").then(r => r.json()).then(data =>
       this.setState({repos: this.state.repos.concat([data])}));
+
   },
   render: function(){
 
     var repoList = this.state.repos, searchString = this.state.searchString.trim().toLowerCase();
 
     if(searchString.length > 0){
-        repoList = repoList.filter(function(l){
-            return l.name.toLowerCase().match( searchString );
+        repoList = repoList.filter(function(repo){
+            return repo.name.toLowerCase().match( searchString );
             });
     }
 
     return (
       <div>
-        <input type="text" value={this.state.searchString} onChange={this.handleChange} placeholder="Search" />
+        <input type='text' value={this.state.searchString} onChange={this.handleChange} placeholder='Search' />
 
         {
           repoList.map(function(repo){
