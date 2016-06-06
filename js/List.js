@@ -55,10 +55,13 @@ var List = React.createClass({
         <input type="text" value={this.state.searchString} onChange={this.handleChange} placeholder="Search" />
 
         {
-          repoList.map(function(l){
-            return <div>
-                    {l.name} <a href={l.url}>{l.url}</a>
-                   </div>
+          repoList.map(function(repo){
+            return<div>
+                    <a href={repo.clone_url}>{repo.name.replace(/-/g, ' ').toUpperCase().replace('PYTHON','python').replace('MONGO', 'mongo')}</a>
+                    <p>Forks: {repo.source.forks}</p>
+                    <p>Language: {repo.language}</p>
+                    <p>Created At: {repo.created_at.substring(0,10).replace(/-/g, '/')}</p>
+                  </div>
           })
         }
 
